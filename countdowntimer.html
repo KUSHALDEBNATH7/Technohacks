@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Countdown Timer</title>
+	<style>
+		  body {
+            font-family: Arial, sans-serif;
+            background-color: #93edfd;
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #timer {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #e00606;
+        }
+
+        #controls {
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            background-color: #f39c12;
+            color: #040404;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e268fa;
+        }
+    </style>
+	</style>
+</head>
+<body>
+	 <div id="timer">00:00:00</div>
+    <div id="controls">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="reset">Reset</button>
+    </div>
+
+    <script>
+        let countdown;
+        let timerDisplay = document.getElementById('timer');
+        let startButton = document.getElementById('start');
+        let stopButton = document.getElementById('stop');
+        let resetButton = document.getElementById('reset');
+
+        function startTimer(seconds) {
+            const now = Date.now();
+            const then = now + seconds * 1000;
+            displayTimeLeft(seconds);
+
+            countdown = setInterval(() => {
+                const secondsLeft = Math.round((then - Date.now()) / 1000);
+
+                if (secondsLeft < 0) {
+                    clearInterval(countdown);
+                    return;
+                }
+
+                displayTimeLeft(secondsLeft);
+            }, 1000);
+        }
+
+        function displayTimeLeft(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const remainderSeconds = seconds % 60;
+
+            const display = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainderSeconds).padStart(2, '0')}`;
+            timerDisplay.textContent = display;
+        }
+
+        startButton.addEventListener('click', () => {
+            const seconds = 60; // Set your countdown time in seconds here
+            startTimer(seconds);
+        });
+
+        stopButton.addEventListener('click', () => {
+            clearInterval(countdown);
+        });
+
+        resetButton.addEventListener('click', () => {
+            clearInterval(countdown);
+            timerDisplay.textContent = '00:00:00';
+        });
+    </script>
+
+</body>
+</html>
